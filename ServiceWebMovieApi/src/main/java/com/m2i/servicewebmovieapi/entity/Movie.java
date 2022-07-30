@@ -1,4 +1,3 @@
-
 package com.m2i.servicewebmovieapi.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -36,39 +35,76 @@ import org.hibernate.annotations.CreationTimestamp;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Table(name = "movies")
 public class Movie implements Serializable {
-    
-   @Id
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id; 
-   
-   private String name;
-   
-   @CreationTimestamp
-   @Temporal(TemporalType.TIMESTAMP)
-   @Column(columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-   private Date releaseDate;
-   
-   private int duration;
-   
-   private float rating;
-   
-   private String synopsie;
-   
-   private String originCountry;
+    private int id;
+
+    private String name;
+
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private Date releaseDate;
+
+    private int duration;
+
+    private float rating;
+
+    private String synopsie;
+
+    private String originCountry;
     @ManyToMany
     @JoinTable(name = "Movie_Genre",
             joinColumns = @JoinColumn(name = "idMovie"),
             inverseJoinColumns = @JoinColumn(name = "idGenre"))
     private List<Genre> genres = new ArrayList<>();
-    
-    @ManyToMany(mappedBy="movies")
+
+    @ManyToMany(mappedBy = "movies")
     private List<Actor> actors = new ArrayList<>();
-    
+
     @Column
     @ElementCollection
-    @CollectionTable(name="languages", joinColumns= @JoinColumn(name="idMovie"))
+    @CollectionTable(name = "languages", joinColumns = @JoinColumn(name = "idMovie"))
     private List<String> languages;
-   
-     @OneToMany( mappedBy="movie" )
-       private List<Comment> comments= new ArrayList<>();
+
+    @OneToMany(mappedBy = "movie")
+    private List<Comment> comments = new ArrayList<>();
+
+    public void copy(Movie movieData) {
+        if (movieData.getActors() != null) {
+            this.actors = movieData.getActors();
+        }
+
+        if (movieData.getComments() != null) {
+            this.comments = movieData.getComments();
+        }
+
+        if (movieData.getGenres() != null) {
+            this.genres = movieData.getGenres();
+        }
+
+        if (movieData.getLanguages() != null) {
+            this.languages = movieData.getLanguages();
+        }
+
+        if (movieData.getName() != null) {
+            this.name = movieData.getName();
+        }
+
+        if (movieData.getOriginCountry() != null) {
+            this.originCountry = movieData.getOriginCountry();
+        }
+
+        if (movieData.getSynopsie() != null) {
+            this.synopsie = movieData.getSynopsie();
+        }
+
+        this.duration = movieData.getDuration();
+
+        this.releaseDate = movieData.getReleaseDate();
+
+        this.rating = movieData.getRating();
+
+    }
 }

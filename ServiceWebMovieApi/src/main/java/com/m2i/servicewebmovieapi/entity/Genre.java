@@ -38,11 +38,10 @@ public class Genre implements Serializable {
     private String name;
     
     
-     public void copy(Genre genreData) throws Exception {
-         if (genreData.name == null ) {
-            throw new Exception(" name null ");
-        }
-        this.name = genreData.name;
+     public void copy(Genre genreData) {
+         if (genreData.name != null ) {
+            this.name = genreData.name;
+        }   
         
     }
     
